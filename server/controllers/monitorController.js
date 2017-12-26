@@ -120,6 +120,18 @@ exports.monitor_get_week_data = function (req, res) {
     });
 };
 
+exports.monitor_get_month_data = function (req, res) {
+
+    g_monitor_model.getMonthListeners('_listeners date').then((data) => {
+        res.status(200).json(data);
+    }).catch((error) => {
+        res.status(500).json({
+            message: 'Could not get the listeners of month',
+            status: 500
+        });
+    });
+};
+
 exports.monitor_schedule_save_data = function(io){
     var all_monitors_data = {
         listeners: 0,

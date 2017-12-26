@@ -165,7 +165,7 @@ export class MonitorComponent implements OnInit {
   getRealTimeListeners() {
     this.monitorRt = this.serverService.connectToServerEvents().subscribe((d) => {
 
-      if (this.realTimeData[0].data.length > 25) {
+      if (this.realTimeData[0].data.length > 45) {
         this.realTimeLabels.shift();
         this.realTimeData[0].data.shift();
       } else {
@@ -234,26 +234,26 @@ export class MonitorComponent implements OnInit {
    * Get listeners from last month
    */
   getMonthListeners() {
-    var weekDays = this.arrayDaysPipe.transform(new Date(), 'YYYY-MM-DD');
-    var weekArray = [];
+    var monthDays = this.arrayDaysPipe.transform(new Date(), 'YYYY-MM-DD', 'month');
+    var monthArray = [];
 
 
     this.serverService.getLastMonth()
       .then((res: any) => {
         console.log(res);
         
-        // weekArray = weekDays.map((day) => {
-        //   var d = res.find(d => { return d._id == day; });
+        monthArray = monthDays.map((day) => {
+          var d = res.find(d => { return d._id == day; });
 
-        //   if (!d)
-        //     return { _id: day, count: 0, listeners: 0 };
+          if (!d)
+            return { _id: day, count: 0, listeners: 0 };
 
-        //   return d;
+          return d;
 
-        // });
+        });
 
-        // this.weekListenersData[0].data = weekArray.map(d => Math.floor(d.listeners));
-        // this.weekListenersLabels = weekArray.map(d => d._id);
+        this.monthListenersData[0].data = monthArray.map(d => Math.floor(d.listeners));
+        this.monthListenersLabels = monthArray.map(d => d._id);
       })
       .catch(err => console.error(err));
   }
@@ -273,6 +273,10 @@ export class MonitorComponent implements OnInit {
 
       case 3:
         this.getWeekListeners();
+        break;
+      
+      case 4:
+        this.getMonthListeners();
         break;
     }
   }

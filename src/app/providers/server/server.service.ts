@@ -97,4 +97,21 @@ export class ServerService {
     });
   }
 
+  /**
+   * Get server listeners specific month
+   */
+  getLastMonth() {
+    return new Promise((resolve, reject) => {
+
+      let seq = this.api.get('api/monitor/listeners/month');
+
+      seq.subscribe(res => {
+        resolve(res);
+      }, err => {
+        console.error('ERROR', err);
+        reject(err);
+      });
+    });
+  }
+
 }

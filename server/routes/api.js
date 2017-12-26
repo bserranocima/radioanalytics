@@ -12,5 +12,6 @@ router.get('/server', monitor_controller.monitor_get_all_data);
 router.get('/monitor/listeners/hour', monitor_controller.monitor_get_last_hour_data);
 router.get('/monitor/listeners/day/:date', monitor_controller.monitor_get_day_data);
 router.get('/monitor/listeners/week', monitor_controller.monitor_get_week_data);
+router.get('/monitor/listeners/month', monitor_controller.monitor_get_month_data);
 
 module.exports = router;

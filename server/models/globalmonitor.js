@@ -131,4 +131,46 @@ exports.getWeekListeners = function (date, fields) {
 }
 
 
+exports.getMonthListeners = function (date, fields) {
+
+    var startDate = moment().startOf('month').toDate();
+    var endDate = moment().endOf('month').toDate();
+
+    console.log(startDate);
+    console.log(endDate);
+
+    return new Promise((resolve, reject) => {
+        GlobalMonitorModel.aggregate([
+            // Match on range
+            {
+                "$match": {
+                    "date": {
+                        "$gte": startDate,
+                        "$lt": endDate
+                    }
+                }
+            },
+            {
+                "$project": {
+                    "day": { '$dateToString': { 'format': "%Y-%m-%d", 'date': "$date" } },
+                    "listeners": "$_listeners"
+                }
+            },
+            // Then group on just the rolled up date
+            {
+                "$group": {
+                    "_id": "$day",
+                    "count": { "$sum": 1 },
+                    "listeners": { "$avg": "$listeners" }
+                }
+            }
+        ], function (err, results) {
+            if (err) reject(err);
+
+            resolve(results);
+        });
+    });
+}
+
+
 exports.GlobalMonitorModel;

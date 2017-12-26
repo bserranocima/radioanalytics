@@ -1,0 +1,68 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Todos los oyentes (Ahora)</h3>
+            </div>
+            <div class="panel-body">
+              <div class="col-xs-12">
+                <div class="row">
+                  <div class="col-xs-12 col-md-10 chart-line-container">
+                    <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
+                      [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" (chartHover)="chartHovered($event)"></canvas>
+                  </div>
+                  
+                  <div class="col-xs-12 col-md-2">
+                    <a routerLink="/monitor" class="btn btn-primary">Ver histórico</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Lista de emisoras</h3>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-xs-12 col-md-6">
+                  <div class="list-sources-wrapper">
+                    <div class="table-responsive">
+                      <table class="table table-condensed table-hover">
+                        <thead>
+                          <tr>
+                            <th>Emisora/Montaje</th>
+                            <th>Oyentes</th>
+                          </tr>
+                        </thead>
+      
+                        <tbody>
+                          <tr *ngFor="let source of sources">
+                            <td><a routerLink="/source/{{ source.mount }}">{{source.mount}}</a></td>
+                            <td>{{source.listeners}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-xs-12 col-md-6">
+                  <canvas baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

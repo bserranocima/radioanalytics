@@ -1,0 +1,27 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import url("app/components/dashboard/dashboard.component.css");
+
+.sidebar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-width: 500px;
+    height: 100%;
+    background-color: aliceblue;
+}
+
+.app-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    background-color: #FFF;
+}
+
+.container-padding {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}

@@ -68,14 +68,13 @@ export class DashboardComponent implements OnInit {
    */
   getMonitorListeners(){
     this.monitorRt = this.serverService.connectToServerEvents().subscribe((d) => {
-
-      if (this.lineChartData[0].data.length > 25) {
-        this.lineChartLabels.shift();
-        this.lineChartData[0].data.shift();
-      } else {
         this.lineChartData[0].data.push(d.listeners);
         let date = moment(d.date, "YYYY-MM-DD HH:mm:ss").format('HH:mm:ss');
         this.lineChartLabels.push(date);
+
+      if (this.lineChartData[0].data.length > 45) {
+        this.lineChartLabels.shift();
+        this.lineChartData[0].data.shift();
       }
     });
   }

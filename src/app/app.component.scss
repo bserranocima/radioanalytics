@@ -13,7 +13,54 @@
         position: relative;
         min-width: 300px;
         height: 100%;
-        background-color: aliceblue;
+        background-color: #FFF;
+        box-shadow: 0 1px 1px 1px #e6e6e6;
+
+        .main-menu {
+            ul {
+                li {
+                    a {
+                        position: relative;
+                        display: inline-block;
+                        padding: 15px;
+                        width: 100%;
+                        text-align: center;
+
+                        &:after {
+                            content: '';
+                            position: absolute;
+                            bottom: 0;
+                            left: 0;
+                            right: 0;
+                            width: 80%;
+                            margin: auto;
+                            border-bottom: 1px solid #eaeaea;
+                        }
+                        
+
+                        &:hover, &:focus, &:active {
+                            text-decoration: none;
+                        }
+
+                        .link-container {
+                            display: inline-block;
+                            width: 100%;
+                            text-align: left;
+                            > * {
+                                display: inline-block;
+                                vertical-align: middle;
+                            }
+    
+                            span {
+                                margin-left: 10px;
+                            }
+                        }
+
+                        
+                    }
+                }
+            }
+        }
     }
 
     .app-inside-container {

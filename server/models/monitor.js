@@ -28,13 +28,44 @@ function getICInstance(params) {
 exports.get_monitor_remote_data = function(params){
 
     var monitor = getICInstance(params);
+    var _server = {
+        listeners: 0
+    };
 
     return new Promise((resolve, reject) => {
-
-        monitor.getServerInfo(function (err, server) {
+        monitor.createStatsXmlStream('/admin/stats', function (err, xmlStream) {
             if (err) reject(err);
-            resolve(server);
+
+            var xmlParser = new Monitor.XmlStreamParser();
+
+            xmlParser.on('error', function (err) {
+                reject(err);
+            });
+
+            xmlParser.on('server', function (server) {
+                _server = server;
+            });
+
+            // xmlParser.on('source', function (source) {
+            //     sources.push(source);
+            // });
+
+            // Finish event is being piped from xmlStream 
+            xmlParser.on('finish', function () {
+                resolve(_server);
+            });
+
+            if(typeof xmlStream == 'undefined')
+                reject('Stream failed');
+
+            xmlStream.pipe(xmlParser);
         });
+        
+        
+        // monitor.getServerInfo(function (err, server) {
+        //     if (err) reject(err);
+        //     resolve(server);
+        // });
     });
 
 }

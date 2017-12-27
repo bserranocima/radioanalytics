@@ -57,8 +57,10 @@ io.on('connection', socket => {
     console.log('Client connected');
 });
 
+
 // Start schedules
 var monitor_schedule = require('./server/schedules/monitor')(io);
+var source_schedule = require('./server/schedules/source')(io);
 app.set('socketio', io);
 
 /**

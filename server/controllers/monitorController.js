@@ -43,44 +43,8 @@ exports.monitor_detail = function (req, res) {
 };
 
 // Get the data from all monitors
-exports.monitor_get_all_data = function(req, res){
-
-    // Get all data previously stored
-
-    // Create a event to 
-
-    // var all_monitors_data = {
-    //     listeners: 0,
-    //     date: new Date()
-    // };
-    // var promises = [];
-    // var io = req.app.get('socketio');
-
-    // monitors.forEach(monitor => {
-    //     promises.push(
-    //         monitor_model.get_monitor_remote_data(monitor).then((data) => {
-    //             // Save to database
-    //             monitor_model.save_listeners_connections({
-    //                 host: monitor.host,
-    //                 serverId: data.serverId,
-    //                 listeners: data.listeners
-    //             }).then((r) => {
-    //                 console.log(r);
-    //                 all_monitors_data.listeners += data.listeners;
-    //             })
-    //             .catch(err => console.error(err));
-    //         })
-    //         .catch(err => console.error(err))
-    //     );
-    // });
-
-    // Promise.all(promises).then(() => {
-    //     // Emit to client
-    //     io.emit('icserver', all_monitors_data);
-    // });
-    
+exports.monitor_get_all_data = function(req, res){    
     res.status(200).send('');
-     
 };
 
 exports.monitor_get_last_hour_data = function(req, res){
@@ -141,6 +105,7 @@ exports.monitor_schedule_save_data = function(io){
 
     monitors.forEach(monitor => {
         var promise = monitor_model.get_monitor_remote_data(monitor).then((data) => {
+            
             // Save to database
             return monitor_model.save_listeners_connections({
                 host: monitor.host,
@@ -149,8 +114,6 @@ exports.monitor_schedule_save_data = function(io){
                 date: moment()
             }).then((r) => {
                 all_monitors_data.listeners += data.listeners;
-                //console.log('host: ' + monitor.host + ' listeners: ' + data.listeners);
-                
             })
             .catch(err => console.error(err));
         })
@@ -171,7 +134,7 @@ exports.monitor_broadcast_sources = function(io){
     let promises = [];
 
     monitors.forEach(monitor => {
-        var promise =source_model.get_sources_remote_data(monitor).then((data) => {
+        var promise = source_model.get_sources_remote_data(monitor).then((data) => {
             return merge_source_listeners(data);
         })
         .catch(err => console.error(err));
@@ -181,6 +144,7 @@ exports.monitor_broadcast_sources = function(io){
 
     Promise.all(promises).then(() => {
         // Emit to client
+        save_sources();
         io.emit('icsources', sources_list);
         sources_list = [];
     });
@@ -192,24 +156,34 @@ merge_source_listeners = function(remote_sources){
     if(remote_sources.length <= 0)
         return;
 
+    // Loop through new resources
     remote_sources.forEach(source => {
-        
         var promise = new Promise((resolve, reject) => {
             let s = sources_list.find(x => x.mount == source.mount);
-            if(! s){
+            if (!s) {
                 sources_list.push(source);
                 s = source;
             }
-            
-            s.listeners += source.listeners;
-            s.listener_peak += source.listener_peak;
 
+            s.listeners += source.listeners;
         });
-        
-        promises.push( promise );
+
+        promises.push(promise);
     });
 
     Promise.all(promises).then(() => {
         return;
     });
 }
+
+save_sources = function(){
+    if (sources_list.length <= 0)
+        return;
+
+    sources_list.forEach(source => {
+        source_model.save_source({
+            mount: source.mount,
+            listeners: source.listeners
+        });
+    });
+};

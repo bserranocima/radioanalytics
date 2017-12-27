@@ -6,5 +6,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'app';
+  title = 'Radio Analytics';
+
+  public pages: any = [
+    { name: 'Dashboard', icon: 'dashboard', routerLink:"/dashboard" },
+    { name: 'Monitor Global', icon: 'assessment', routerLink:"/monitor" }
+  ];
 }

@@ -125,7 +125,7 @@ export class MonitorComponent implements OnInit {
     }
   ];
 
-  // Week Day Bars chart
+  // Month Day Bars chart
   public monthListenersData: Array<any> = [
     { data: [], label: 'Promedio de oyentes en el mes' }
   ];

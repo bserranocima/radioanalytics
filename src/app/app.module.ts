@@ -25,6 +25,7 @@ import { SourceComponent } from './components/source/source.component';
 // Services
 import { ApiService } from './providers/api/api.service';
 import { ServerService } from './providers/server/server.service';
+import { SourceService } from './providers/source/source.service';
 
 const config: SocketIoConfig = { url: 'http://localhost:3000', options: { } };
 
@@ -75,7 +76,7 @@ const ROUTES = [
     RouterModule.forRoot(ROUTES), // Add routes to the app
     SocketIoModule.forRoot(config)
   ],
-  providers: [ApiService, ServerService, DateHumanPipe, ArrayDaysPipe],
+  providers: [ApiService, ServerService, SourceService, DateHumanPipe, ArrayDaysPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

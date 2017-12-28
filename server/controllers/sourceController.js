@@ -33,9 +33,6 @@ exports.source_get_last_hour_data = function (req, res) {
 
     var mountPoint = req.params.mount;
 
-    console.log(mountPoint);
-    
-
     source_model.getLastMinutesListeners(mountPoint, 60, 'mount _listeners date').then((data) => {
         res.status(200).json(data);
     }).catch((error) => {
@@ -48,11 +45,14 @@ exports.source_get_last_hour_data = function (req, res) {
 
 exports.source_get_day_data = function (req, res) {
 
-    g_monitor_model.getDayListeners(req.params.date, '_listeners').then((data) => {
+    var mountPoint = req.params.mount;
+    var date = req.params.date;
+
+    source_model.getDayListeners(mountPoint, date, '_listeners').then((data) => {
         res.status(200).json(data);
     }).catch((error) => {
         res.status(500).json({
-            message: 'Could not get the listeners of day',
+            message: 'Could not get the listeners of day for ' + mountPoint,
             status: 500
         });
     });
@@ -61,11 +61,13 @@ exports.source_get_day_data = function (req, res) {
 
 exports.source_get_week_data = function (req, res) {
 
-    g_monitor_model.getWeekListeners('_listeners date').then((data) => {
+    var mountPoint = req.params.mount;
+
+    source_model.getWeekListeners(mountPoint, '_listeners date').then((data) => {
         res.status(200).json(data);
     }).catch((error) => {
         res.status(500).json({
-            message: 'Could not get the listeners of week',
+            message: 'Could not get the listeners of week for ' + mountPoint,
             status: 500
         });
     });
@@ -73,11 +75,13 @@ exports.source_get_week_data = function (req, res) {
 
 exports.source_get_month_data = function (req, res) {
 
-    g_monitor_model.getMonthListeners('_listeners date').then((data) => {
+    var mountPoint = req.params.mount;
+
+    source_model.getMonthListeners(mountPoint, '_listeners date').then((data) => {
         res.status(200).json(data);
     }).catch((error) => {
         res.status(500).json({
-            message: 'Could not get the listeners of month',
+            message: 'Could not get the listeners of month for ' + mountPoint,
             status: 500
         });
     });

@@ -3,7 +3,7 @@
     <div class="col-xs-12">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Estadísticas para {{ mountName }}</h3>
+          <h3 class="panel-title">Estadísticas para {{ mountPoint }}</h3>
         </div>
         <div class="panel-body">
           <mat-tab-group (selectedTabChange)="onTabClick($event)">
@@ -25,17 +25,22 @@
                 <div class="row">
                   <div class="col-xs-12">
                     <div class="container-padding">
-                      <!-- <mat-form-field>
-                        <input matInput [matDatepicker]="picker1" placeholder="Seleccione una fecha" [formControl]="date">
+                      <mat-form-field>
+                        <input matInput 
+                        [matDatepicker]="picker1" 
+                        placeholder="Seleccione una fecha" 
+                        [formControl]="date" 
+                        (dateChanged)="getDayListeners()" 
+                        (dateInput)="getDayListeners()">
                         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                         <mat-datepicker #picker1></mat-datepicker>
-                      </mat-form-field> -->
+                      </mat-form-field>
                     </div>
                   </div>
 
                   <div class="col-xs-12">
-                    <!-- <canvas baseChart [datasets]="dateListenersData" [labels]="dateListenersLabels" [options]="dateListenersOptions" [colors]="dateListenersColors"
-                      [legend]="dateListenersChartLegend" [chartType]="dateListenersChartType"></canvas> -->
+                    <canvas baseChart [datasets]="dateListenersData" [labels]="dateListenersLabels" [options]="dateListenersOptions" [colors]="dateListenersColors"
+                      [legend]="dateListenersChartLegend" [chartType]="dateListenersChartType"></canvas>
                   </div>
                 </div>
               </div>
@@ -43,15 +48,15 @@
 
             <mat-tab label="Promedio semana">
               <div class="chart-bars-container">
-                <!-- <canvas baseChart [datasets]="weekListenersData" [labels]="weekListenersLabels" [options]="weekListenersOptions" [colors]="weekListenersColors"
-                  [legend]="weekListenersLegend" [chartType]="weekListenersChartType"></canvas> -->
+                <canvas baseChart [datasets]="weekListenersData" [labels]="weekListenersLabels" [options]="weekListenersOptions" [colors]="weekListenersColors"
+                  [legend]="weekListenersLegend" [chartType]="weekListenersChartType"></canvas>
               </div>
             </mat-tab>
 
             <mat-tab label="Ultimo mes">
               <div class="chart-bars-container">
-                <!-- <canvas baseChart [datasets]="monthListenersData" [labels]="monthListenersLabels" [options]="monthListenersOptions" [colors]="monthListenersColors"
-                  [legend]="monthListenersLegend" [chartType]="monthListenersChartType"></canvas> -->
+                <canvas baseChart [datasets]="monthListenersData" [labels]="monthListenersLabels" [options]="monthListenersOptions" [colors]="monthListenersColors"
+                  [legend]="monthListenersLegend" [chartType]="monthListenersChartType"></canvas>
               </div>
             </mat-tab>
           </mat-tab-group>

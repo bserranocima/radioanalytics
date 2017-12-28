@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Socket } from 'ng-socket-io';
 import { BaseChartDirective } from 'ng2-charts';
@@ -21,7 +22,8 @@ export class SourceComponent implements OnInit {
   @ViewChild(BaseChartDirective)
   public chart: BaseChartDirective;
 
-  mountName: string = '';
+  public mountPoint: string = '';
+  public date = new FormControl(new Date());
 
   // Real time chart
   public realTimeData: Array<any> = [
@@ -72,6 +74,84 @@ export class SourceComponent implements OnInit {
     }
   ];
 
+  // Day Bars chart
+  public dateListenersData: Array<any> = [
+    { data: [], label: 'Oyentes para el ' }
+  ];
+
+  public dateListenersLabels: Array<any> = [];
+  public dateListenersLegend: boolean = true;
+  public dateListenersChartType: string = 'bar';
+  public dateListenersChartLegend: boolean = true;
+
+  public dateListenersOptions: any = {
+    responsive: true,
+    scaleShowVerticalLines: false
+  };
+
+  public dateListenersColors: Array<any> = [
+    { // blue
+      backgroundColor: 'rgba(1,146,224,0.2)',
+      borderColor: 'rgba(1,146,224,1)',
+      pointBackgroundColor: 'rgba(1,146,224,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(1,146,224,0.8)'
+    }
+  ];
+
+  // Week Day Bars chart
+  public weekListenersData: Array<any> = [
+    { data: [], label: 'Promedio de oyentes en la semana' }
+  ];
+
+  public weekListenersLabels: Array<any> = [];
+  public weekListenersLegend: boolean = true;
+  public weekListenersChartType: string = 'bar';
+  public weekListenersChartLegend: boolean = true;
+
+  public weekListenersOptions: any = {
+    responsive: true,
+    scaleShowVerticalLines: false
+  };
+
+  public weekListenersColors: Array<any> = [
+    { // blue
+      backgroundColor: 'rgba(1,146,224,0.2)',
+      borderColor: 'rgba(1,146,224,1)',
+      pointBackgroundColor: 'rgba(1,146,224,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(1,146,224,0.8)'
+    }
+  ];
+
+  // Month Day Bars chart
+  public monthListenersData: Array<any> = [
+    { data: [], label: 'Promedio de oyentes en el mes' }
+  ];
+
+  public monthListenersLabels: Array<any> = [];
+  public monthListenersLegend: boolean = true;
+  public monthListenersChartType: string = 'bar';
+  public monthListenersChartLegend: boolean = true;
+
+  public monthListenersOptions: any = {
+    responsive: true,
+    scaleShowVerticalLines: false
+  };
+
+  public monthListenersColors: Array<any> = [
+    { // blue
+      backgroundColor: 'rgba(1,146,224,0.2)',
+      borderColor: 'rgba(1,146,224,1)',
+      pointBackgroundColor: 'rgba(1,146,224,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(1,146,224,0.8)'
+    }
+  ];
+
   public sourceRT; 
 
   constructor(private activatedRoute: ActivatedRoute, private sourceService: SourceService, public datePipe: DateHumanPipe, public arrayDaysPipe: ArrayDaysPipe) { }
@@ -79,9 +159,9 @@ export class SourceComponent implements OnInit {
   ngOnInit() {
     // subscribe to router event
     this.activatedRoute.params.subscribe((params: Params) => {
-      this.mountName = params['name'];
-      console.log(this.mountName);
-      this.sourceService.connectToSourceRealTime(this.mountName);
+      this.mountPoint = params['name'];
+      console.log(this.mountPoint);
+      this.sourceService.connectToSourceRealTime(this.mountPoint);
       this.getRealTimeListeners();
     });
 
@@ -89,7 +169,7 @@ export class SourceComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.sourceService.disconnect('icsource'+this.mountName);
+    this.sourceService.disconnect('icsource'+this.mountPoint);
     this.sourceRT.unsubscribe();
 
   }
@@ -98,7 +178,7 @@ export class SourceComponent implements OnInit {
    * Get real time listeners
    */
   getRealTimeListeners() {
-    this.sourceRT = this.sourceService.getRealTimeData(this.mountName).subscribe((d) => {
+    this.sourceRT = this.sourceService.getRealTimeData(this.mountPoint).subscribe((d) => {
       
       if (this.realTimeData[0].data.length > 100) {
         this.realTimeLabels.shift();
@@ -117,12 +197,80 @@ export class SourceComponent implements OnInit {
    * Get listeners from the last hour
    */
   getLastHourListeners() {
-    this.sourceService.getLastHour(this.mountName)
+    this.sourceService.getLastHour(this.mountPoint)
       .then((res: any) => {
         console.log(res);
-        this.lastHourData[0].label = 'Oyentes de ' + this.mountName;
+        this.lastHourData[0].label = 'Oyentes de ' + this.mountPoint;
         this.lastHourData[0].data = res.map(record => { return record._listeners; });
         this.lastHourLabels = res.map(record => { return this.datePipe.transform(record.date); });
+      })
+      .catch(err => console.error(err));
+  }
+
+  /**
+   * Get listeners from specific day
+   */
+  getDayListeners() {
+    
+    let dateFormatted = this.datePipe.transform(this.date.value);
+  
+    this.sourceService.getDay(this.date.value, this.mountPoint)
+      .then((res: any) => {
+        this.dateListenersData[0].data = res.map(record => { return Math.floor(record.listeners); });
+        this.dateListenersLabels = res.map(record => { return record._id });
+      })
+      .catch(err => console.error(err));
+  }
+
+  /**
+   * Get listeners from last week
+   */
+  getWeekListeners() {
+    var weekDays = this.arrayDaysPipe.transform(new Date(), 'YYYY-MM-DD');
+    var weekArray = [];
+
+
+    this.sourceService.getLastWeek(this.mountPoint)
+      .then((res: any) => {        
+        weekArray = weekDays.map((day) => {
+          var d = res.find(d => { return d._id == day; });
+
+          if (!d)
+            return { _id: day, count: 0, listeners: 0 };
+
+          return d;
+
+        });
+
+        this.weekListenersData[0].data = weekArray.map(d => Math.floor(d.listeners));
+        this.weekListenersLabels = weekArray.map(d => d._id);
+      })
+      .catch(err => console.error(err));
+  }
+
+  /**
+   * Get listeners from last month
+   */
+  getMonthListeners() {
+    var monthDays = this.arrayDaysPipe.transform(new Date(), 'YYYY-MM-DD', 'month');
+    var monthArray = [];
+
+
+    this.sourceService.getLastMonth(this.mountPoint)
+      .then((res: any) => {
+
+        monthArray = monthDays.map((day) => {
+          var d = res.find(d => { return d._id == day; });
+
+          if (!d)
+            return { _id: day, count: 0, listeners: 0 };
+
+          return d;
+
+        });
+
+        this.monthListenersData[0].data = monthArray.map(d => Math.floor(d.listeners));
+        this.monthListenersLabels = monthArray.map(d => d._id);
       })
       .catch(err => console.error(err));
   }
@@ -137,17 +285,17 @@ export class SourceComponent implements OnInit {
         this.getLastHourListeners();
         break;
 
-      // case 2:
-      //   this.getDayListeners();
-      //   break;
+      case 2:
+        this.getDayListeners();
+        break;
 
-      // case 3:
-      //   this.getWeekListeners();
-      //   break;
+      case 3:
+        this.getWeekListeners();
+        break;
 
-      // case 4:
-      //   this.getMonthListeners();
-      //   break;
+      case 4:
+        this.getMonthListeners();
+        break;
     }
   }
 

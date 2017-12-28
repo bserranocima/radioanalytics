@@ -18,5 +18,8 @@ router.get('/monitor/listeners/month', monitor_controller.monitor_get_month_data
 
 // Collect mount points
 router.get('/source/:mount/listeners/hour', source_controller.source_get_last_hour_data );
+router.get('/source/:mount/listeners/day/:date', source_controller.source_get_day_data);
+router.get('/source/:mount/listeners/week', source_controller.source_get_week_data);
+router.get('/source/:mount/listeners/month', source_controller.source_get_month_data);
 
 module.exports = router;

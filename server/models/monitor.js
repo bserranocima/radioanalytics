@@ -52,11 +52,11 @@ exports.get_monitor_remote_data = function(params){
 
             // Finish event is being piped from xmlStream 
             xmlParser.on('finish', function () {
-                resolve(_server);
+                return resolve(_server);
             });
 
             if(typeof xmlStream == 'undefined')
-                reject('Stream failed');
+                return reject('Stream failed');
 
             xmlStream.pipe(xmlParser);
         });

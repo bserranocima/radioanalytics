@@ -1,6 +1,7 @@
 //Require Mongoose
 var mongoose = require('mongoose');
 var Monitor = require('icecast-monitor');
+var moment = require('moment');
 
 //Define a schema
 var Schema = mongoose.Schema;
@@ -103,6 +104,133 @@ exports.getLastMinutesListeners = function (mountPoint, minutes, fields) {
 
             resolve(results);
         })
+    });
+}
+
+exports.getDayListeners = function (mountPoint, date, fields) {
+
+    var currentDate = moment(date).startOf('date').toDate();
+    var nextDate = moment(date).startOf('date').add(1, 'd').toDate();
+
+    return new Promise((resolve, reject) => {
+        SourceModel.aggregate([
+            // Match on range
+            {
+                "$match": {
+                    "date": {
+                        "$gte": currentDate,
+                        "$lt": nextDate
+                    },
+
+                    "mount": {
+                        "$eq": '/' + mountPoint
+                    }
+                }
+            },
+            // Then group on just the rolled up date
+            {
+                "$project": {
+                    "day": { '$dateToString': { 'format': "%Y-%m-%d", 'date': "$date" } },
+                    "listeners": "$_listeners"
+                }
+            },
+            {
+                "$group": {
+                    "_id": '$day',
+                    "count": { "$sum": 1 },
+                    "listeners": { "$avg": "$listeners" }
+                }
+            },
+
+        ], function (err, results) {
+            if (err) reject(err);
+
+            resolve(results);
+        });
+    });
+}
+
+exports.getWeekListeners = function (mountPoint, fields) {
+
+    var startDate = moment().startOf('week').toDate();
+    var endDate = moment().endOf('week').toDate();
+
+    return new Promise((resolve, reject) => {
+        SourceModel.aggregate([
+            // Match on range
+            {
+                "$match": {
+                    "date": {
+                        "$gte": startDate,
+                        "$lt": endDate
+                    },
+
+                    "mount": {
+                        "$eq": '/' + mountPoint
+                    }
+                }
+            },
+            {
+                "$project": {
+                    "day": { '$dateToString': { 'format': "%Y-%m-%d", 'date': "$date" } },
+                    "listeners": "$_listeners"
+                }
+            },
+            // Then group on just the rolled up date
+            {
+                "$group": {
+                    "_id": "$day",
+                    "count": { "$sum": 1 },
+                    "listeners": { "$avg": "$listeners" }
+                }
+            }
+        ], function (err, results) {
+            if (err) reject(err);
+
+            resolve(results);
+        });
+    });
+}
+
+exports.getMonthListeners = function (mountPoint, fields) {
+
+    var startDate = moment().startOf('month').toDate();
+    var endDate = moment().endOf('month').toDate();
+
+    return new Promise((resolve, reject) => {
+        SourceModel.aggregate([
+            // Match on range
+            {
+                "$match": {
+                    "date": {
+                        "$gte": startDate,
+                        "$lt": endDate
+                    },
+
+                    "mount": {
+                        "$eq": '/' + mountPoint
+                    }
+                }
+            },
+            {
+                "$project": {
+                    "day": { '$dateToString': { 'format': "%Y-%m-%d", 'date': "$date" } },
+                    "listeners": "$_listeners"
+                }
+            },
+            // Then group on just the rolled up date
+            {
+                "$group": {
+                    "_id": "$day",
+                    "count": { "$sum": 1 },
+                    "listeners": { "$avg": "$listeners" }
+                }
+            }
+        ], function (err, results) {
+            if (err) reject(err);
+
+            resolve(results);
+        });
     });
 }
 

@@ -40,4 +40,55 @@ export class SourceService {
     });
   }
 
+  /**
+   * Get server listeners specific day
+   */
+  getDay(date, mountPoint: any) {
+    return new Promise((resolve, reject) => {
+
+      let seq = this.api.get('api/source/' + mountPoint + '/listeners/day/' + date);
+
+      seq.subscribe(res => {
+        resolve(res);
+      }, err => {
+        console.error('ERROR', err);
+        reject(err);
+      });
+    });
+  }
+
+  /**
+   * Get server listeners specific day
+   */
+  getLastWeek(mountPoint: any) {
+    return new Promise((resolve, reject) => {
+
+      let seq = this.api.get('api/source/' + mountPoint  + '/listeners/week');
+
+      seq.subscribe(res => {
+        resolve(res);
+      }, err => {
+        console.error('ERROR', err);
+        reject(err);
+      });
+    });
+  }
+
+  /**
+   * Get server listeners specific month
+   */
+  getLastMonth(mountPoint: any) {
+    return new Promise((resolve, reject) => {
+
+      let seq = this.api.get('api/source/' + mountPoint + '/listeners/month');
+
+      seq.subscribe(res => {
+        resolve(res);
+      }, err => {
+        console.error('ERROR', err);
+        reject(err);
+      });
+    });
+  }
+
 }

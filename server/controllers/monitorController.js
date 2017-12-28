@@ -3,49 +3,11 @@ var monitor_model = require('../models/monitor');
 var source_model = require('../models/source');
 var io = require('../../server');
 var moment = require('moment');
+var read_statics = require('../routes/statics');
 
-var monitors = [
-    {
-        host: 'i3-1frt1.rcnra.4cloud.co',
-        user: 'admin',
-        password: 'rcn234'
-    },
-
-    {
-        host: 'i2-1frt2.rcnra.4cloud.co',
-        user: 'admin',
-        password: 'rcn234'
-    },
-
-    {
-        host: 'i2-1frt3.rcnra.4cloud.co',
-        user: 'admin',
-        password: 'rcn234'
-    },
-
-    {
-        host: 'i2-1frt4.rcnra.4cloud.co',
-        user: 'admin',
-        password: 'rcn234'
-    }
-];
+var monitors = read_statics.get_monitors('../statics/monitors.json');
 
 var sources_list = [];
-
-// Display list of all Monitors
-exports.monitor_list = function (req, res) {
-    res.send('NOT IMPLEMENTED: monitor list');
-};
-
-// Display detail page for a specific Monitor
-exports.monitor_detail = function (req, res) {
-    res.send('NOT IMPLEMENTED: monitor detail: ' + req.params.id);
-};
-
-// Get the data from all monitors
-exports.monitor_get_all_data = function(req, res){    
-    res.status(200).send('');
-};
 
 exports.monitor_get_last_hour_data = function(req, res){
 
@@ -102,7 +64,7 @@ exports.monitor_schedule_save_data = function(io){
         date: moment()
     };
     var promises = [];
-
+    
     monitors.forEach(monitor => {
         var promise = monitor_model.get_monitor_remote_data(monitor).then((data) => {
             

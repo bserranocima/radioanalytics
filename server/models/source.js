@@ -49,7 +49,7 @@ exports.get_sources_remote_data = function (params) {
             });
 
             if( typeof xmlStream == 'undefined' )
-                reject('No sources get from server');
+                return reject('No sources get from server');
 
             xmlStream.pipe(xmlParser);
         });
@@ -76,7 +76,7 @@ exports.get_source_remote_data = function (params, mount) {
             });
 
             if(typeof xmlStream == 'undefined' )
-                reject('XMLStream failed');
+                return reject('XMLStream failed');
 
             xmlStream.pipe(xmlParser);
         });

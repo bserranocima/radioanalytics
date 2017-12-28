@@ -1,33 +1,9 @@
 var source_model = require('../models/source');
 var io = require('../../server');
 var moment = require('moment');
+var read_statics = require('../routes/statics');
 
-var monitors = [
-    {
-        host: 'i3-1frt1.rcnra.4cloud.co',
-        user: 'admin',
-        password: 'rcn234'
-    },
-
-    {
-        host: 'i2-1frt2.rcnra.4cloud.co',
-        user: 'admin',
-        password: 'rcn234'
-    },
-
-    {
-        host: 'i2-1frt3.rcnra.4cloud.co',
-        user: 'admin',
-        password: 'rcn234'
-    },
-
-    {
-        host: 'i2-1frt4.rcnra.4cloud.co',
-        user: 'admin',
-        password: 'rcn234'
-    }
-];
-
+var monitors = read_statics.get_monitors('../statics/monitors.json');
 
 exports.source_get_last_hour_data = function (req, res) {
 

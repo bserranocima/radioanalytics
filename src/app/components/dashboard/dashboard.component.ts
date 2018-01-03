@@ -46,21 +46,26 @@ export class DashboardComponent implements OnInit {
 
   public monitorRt;
   public sourcesRt;
+  public eventsRt;
   public sources = [];
+  public events = [];
 
   constructor(private serverService: ServerService) {}
 
   ngOnInit() {
     this.getMonitorListeners();
     this.getSources();
+    this.getEvents();
+    this.getEventsRT();
   }
 
   ngOnDestroy() {
     this.serverService.disconnect('icserver');
     this.serverService.disconnect('icsources');
+    this.serverService.disconnect('icevents');
     this.monitorRt.unsubscribe();
     this.sourcesRt.unsubscribe();
-    
+    this.eventsRt.unsubscribe();
   }
 
   /**
@@ -76,6 +81,8 @@ export class DashboardComponent implements OnInit {
         this.lineChartLabels.shift();
         this.lineChartData[0].data.shift();
       }
+
+      this.chart.chart.update();
     });
   }
 
@@ -85,26 +92,26 @@ export class DashboardComponent implements OnInit {
   getSources() {
     this.sourcesRt = this.serverService.connectToSourcesEvents().subscribe((data) => {      
       this.sources = data;
-
-      // var promises = this.doughnutChartLabels = data.map(s => { return s.mount; });
-
-      // Promise.all(promises).then((results) => {
-      //   this.doughnutChartData = data.map( s => { return s.listeners; });
-      // });
-      
-      this.chart.chart.update();
-
-      
     });
   }
 
+  /**
+   * Get real time events from server
+   */
+  getEventsRT() {
+    this.eventsRt = this.serverService.getEvents().subscribe((data) => {
+      this.events.push(data);
+    });
+  }
 
-  callServerRoute(){
-    this.serverService.get()
-    .then((res) => {
-      console.log(res);
-    })
-    .catch(err => console.error(err));
+  /**
+   * Get events logs from server
+   */
+  getEvents() {
+    this.serverService.getLogs('error').then((data:any) => {
+      if( data )
+        this.events = data.split('\n').map(r => { return { description: r }; }).reverse();
+    });
   }
 
 }

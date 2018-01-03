@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+var logs_controller = require('../controllers/logsController');
 var monitor_controller = require('../controllers/monitorController');
 var source_controller = require('../controllers/sourceController'); 
 
@@ -7,6 +8,9 @@ var source_controller = require('../controllers/sourceController');
 router.get('/', (req, res) => {
     res.send('api works');
 });
+
+// Get logs
+router.get('/logs/:type', logs_controller.logs_get);
 
 // Collect sources without storing them in a memory
 router.get('/monitor/listeners/hour', monitor_controller.monitor_get_last_hour_data);

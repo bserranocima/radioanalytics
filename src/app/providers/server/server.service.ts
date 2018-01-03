@@ -25,17 +25,23 @@ export class ServerService {
       .map(data => data);
   }
 
+  getEvents() {
+    return this.socket
+      .fromEvent<any>('icevents')
+      .map(data => data);
+  }
+
   disconnect(eventName: string){
     return this.socket.removeListener(eventName);
   }
 
   /**
-   * Get server global stats
+   * Get server logs
    */
-  get() {
+  getLogs(type: string) {
     return new Promise((resolve, reject) => {
 
-      let seq = this.api.get('api/server');
+      let seq = this.api.get('api/logs/' + type);
 
       seq.subscribe(res => {
         resolve(res);

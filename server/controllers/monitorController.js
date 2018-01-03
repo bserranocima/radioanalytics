@@ -4,6 +4,7 @@ var source_model = require('../models/source');
 var io = require('../../server');
 var moment = require('moment');
 var read_statics = require('../routes/statics');
+var logger = require('../facades/logger').Logger;
 
 var monitors = read_statics.get_monitors('../statics/monitors.json');
 
@@ -77,9 +78,15 @@ exports.monitor_schedule_save_data = function(io){
             }).then((r) => {
                 all_monitors_data.listeners += data.listeners;
             })
-            .catch(err => console.error(err));
+            .catch(err => {
+                logger.error('No se guardo el registro de ' + monitor.host + ' en la base de datos.');
+                io.emit('icevents', { description: moment().format('YYYY-MM-DD HH:mm') + ' - No se guardo el registro de ' + monitor.host + ' en la base de datos.' });
+            });
         })
-        .catch(err => console.error(err));
+        .catch(err => { 
+            logger.error('El monitor ' + monitor.host + ' no responde.');
+            io.emit('icevents', { description: moment().format('YYYY-MM-DD HH:mm') + ' - El monitor ' + monitor.host + ' no responde.' }); 
+        });
 
         promises.push(promise);
     });
@@ -87,7 +94,7 @@ exports.monitor_schedule_save_data = function(io){
     Promise.all(promises).then(() => {
         // Emit to client
         g_monitor_model.save_listeners_connections({ listeners: all_monitors_data.listeners, date: Date.now() });
-        
+        logger.info('Listeners: ' + all_monitors_data.listeners);
         io.emit('icserver', all_monitors_data);
     });
 }
@@ -99,7 +106,10 @@ exports.monitor_broadcast_sources = function(io){
         var promise = source_model.get_sources_remote_data(monitor).then((data) => {
             return merge_source_listeners(data);
         })
-        .catch(err => console.error(err));
+        .catch(err => {
+            logger.error('El monitor ' + monitor.host + ' no responde.');
+            io.emit('icevents', { description: moment().format('YYYY-MM-DD HH:mm') + ' - El monitor ' + monitor.host + ' no responde.' }); 
+        });
 
         promises.push(promise);
     });

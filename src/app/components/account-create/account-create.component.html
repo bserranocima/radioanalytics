@@ -1,0 +1,58 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-md-8 col-md-offset-2">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Crear una cuenta</h3>
+        </div>
+        <div class="panel-body">
+          <form class="form-horizontal" [formGroup]="signupForm" (ngSubmit)="onFormSubmit()">
+            <div class="form-group">
+              <label for="email" class="col-sm-3 control-label">Email</label>
+              <div class="col-sm-9">
+                <input type="email" class="form-control" id="email" placeholder="Email" formControlName="email">
+              </div>
+              
+              <div *ngIf="email.invalid && email.touched" class="col-sm-3 text-danger">
+              
+                <div *ngIf="email.errors?.required">
+                  El campo email debe estar lleno
+                </div>
+              
+                <div *ngIf="email.errors?.pattern">
+                  El email es inválido
+                </div>
+              
+              </div>
+            </div>
+
+            <div formGroupName="password">
+              <div class="form-group">
+                <label for="password" class="col-sm-3 control-label">Contraseña</label>
+                <div class="col-sm-9">
+                  <input type="password" class="form-control" id="password" placeholder="Contraseña" formControlName="pwd">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="confirmpassword" class="col-sm-3 control-label">Repetir Contraseña</label>
+                <div class="col-sm-9">
+                  <input type="password" class="form-control" id="confirmpassword" placeholder="Repetir Contraseña" formControlName="confirmPwd">
+                </div>
+              </div>
+
+              <div *ngIf="(password.invalid && password.touched)" class="col-sm-3 text-danger">
+                Las contraseñas deben tener al menos 8 caracteres
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-9 col-sm-3">
+                <button type="submit" [disabled] = "!signupForm.valid" class="btn btn-primary pull-right">Crear cuenta</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

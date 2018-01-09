@@ -10,11 +10,26 @@
             </button>
             <a class="navbar-brand" href="#">Brand</a>
         </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right" *ngIf="user.email">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ user.email }}
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="#" (click)="logout()">Cerrar sesión</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
     </div>
 </nav>
 
 <div class="app-container">
-    <div class="sidebar">
+    <div class="sidebar" *ngIf="user.email">
         <nav class="main-menu">
             <ul class="no-list">
                 <li *ngFor="let page of pages">
@@ -33,4 +48,5 @@
         <router-outlet></router-outlet>
     </div>
 </div>
+<ng4-loading-spinner></ng4-loading-spinner>
 

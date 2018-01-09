@@ -3,6 +3,7 @@ import { FormControl } from '@angular/forms';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Socket } from 'ng-socket-io';
 import { BaseChartDirective } from 'ng2-charts';
+import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { SourceService } from '../../providers/providers';
 
 import { DateHumanPipe } from '../../pipes/date-human/date-human.pipe';
@@ -154,7 +155,12 @@ export class SourceComponent implements OnInit {
 
   public sourceRT; 
 
-  constructor(private activatedRoute: ActivatedRoute, private sourceService: SourceService, public datePipe: DateHumanPipe, public arrayDaysPipe: ArrayDaysPipe) { }
+  constructor(
+    private spinnerService: Ng4LoadingSpinnerService,
+    private activatedRoute: ActivatedRoute, 
+    private sourceService: SourceService, 
+    public datePipe: DateHumanPipe, 
+    public arrayDaysPipe: ArrayDaysPipe) { }
 
   ngOnInit() {
     // subscribe to router event
@@ -188,7 +194,6 @@ export class SourceComponent implements OnInit {
         let date = moment(d.date, "YYYY-MM-DD HH:mm:ss").format('HH:mm:ss');
         this.realTimeLabels.push(date);
       }
-
       this.chart.chart.update();
     });
   }
@@ -197,29 +202,32 @@ export class SourceComponent implements OnInit {
    * Get listeners from the last hour
    */
   getLastHourListeners() {
+    this.spinnerService.show();
     this.sourceService.getLastHour(this.mountPoint)
       .then((res: any) => {
         console.log(res);
         this.lastHourData[0].label = 'Oyentes de ' + this.mountPoint;
         this.lastHourData[0].data = res.map(record => { return record._listeners; });
         this.lastHourLabels = res.map(record => { return this.datePipe.transform(record.date); });
+        this.spinnerService.hide();
       })
-      .catch(err => console.error(err));
+      .catch(err => { console.error(err); this.spinnerService.hide(); });
   }
 
   /**
    * Get listeners from specific day
    */
   getDayListeners() {
-    
+    this.spinnerService.show();
     let dateFormatted = this.datePipe.transform(this.date.value);
   
     this.sourceService.getDay(this.date.value, this.mountPoint)
       .then((res: any) => {
         this.dateListenersData[0].data = res.map(record => { return Math.floor(record.listeners); });
         this.dateListenersLabels = res.map(record => { return record._id });
+        this.spinnerService.hide();
       })
-      .catch(err => console.error(err));
+      .catch(err => { console.error(err); this.spinnerService.hide();});
   }
 
   /**
@@ -229,7 +237,7 @@ export class SourceComponent implements OnInit {
     var weekDays = this.arrayDaysPipe.transform(new Date(), 'YYYY-MM-DD');
     var weekArray = [];
 
-
+    this.spinnerService.show();
     this.sourceService.getLastWeek(this.mountPoint)
       .then((res: any) => {        
         weekArray = weekDays.map((day) => {
@@ -244,8 +252,9 @@ export class SourceComponent implements OnInit {
 
         this.weekListenersData[0].data = weekArray.map(d => Math.floor(d.listeners));
         this.weekListenersLabels = weekArray.map(d => d._id);
+        this.spinnerService.hide();
       })
-      .catch(err => console.error(err));
+      .catch(err => { console.error(err); this.spinnerService.hide();});
   }
 
   /**
@@ -255,6 +264,7 @@ export class SourceComponent implements OnInit {
     var monthDays = this.arrayDaysPipe.transform(new Date(), 'YYYY-MM-DD', 'month');
     var monthArray = [];
 
+    this.spinnerService.show();
 
     this.sourceService.getLastMonth(this.mountPoint)
       .then((res: any) => {
@@ -271,6 +281,7 @@ export class SourceComponent implements OnInit {
 
         this.monthListenersData[0].data = monthArray.map(d => Math.floor(d.listeners));
         this.monthListenersLabels = monthArray.map(d => d._id);
+        this.spinnerService.hide();
       })
       .catch(err => console.error(err));
   }

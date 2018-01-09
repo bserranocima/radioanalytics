@@ -11,6 +11,7 @@ import { ChartsModule } from 'ng2-charts';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatNativeDateModule } from '@angular/material';
 import { MaterialModule } from './modules/material/material.module';
+import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 
 // Pipes
 import { DateHumanPipe } from './pipes/date-human/date-human.pipe';
@@ -21,9 +22,13 @@ import { AppComponent } from './app.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { MonitorComponent } from './components/monitor/monitor.component';
 import { SourceComponent } from './components/source/source.component';
+import { AccountComponent } from './components/account/account.component';
+import { AccountCreateComponent } from './components/account-create/account-create.component';
+import { AccountLoginComponent } from './components/account-login/account-login.component';
 
 // Services
 import { ApiService } from './providers/api/api.service';
+import { UserService } from './providers/user/user.service';
 import { ServerService } from './providers/server/server.service';
 import { SourceService } from './providers/source/source.service';
 
@@ -49,7 +54,18 @@ const ROUTES = [
   {
     path: 'monitor',
     component: MonitorComponent
+  },
+
+  {
+    path: 'signup',
+    component: AccountCreateComponent
+  },
+
+  {
+    path: 'login',
+    component: AccountLoginComponent
   }
+
 ];
 
 
@@ -58,6 +74,8 @@ const ROUTES = [
     DateHumanPipe,
     ArrayDaysPipe,
     AppComponent,
+    AccountCreateComponent,
+    AccountLoginComponent,
     DashboardComponent,
     MonitorComponent,
     SourceComponent,
@@ -74,9 +92,10 @@ const ROUTES = [
     MaterialModule,
     ChartsModule,
     RouterModule.forRoot(ROUTES), // Add routes to the app
-    SocketIoModule.forRoot(config)
+    SocketIoModule.forRoot(config),
+    Ng4LoadingSpinnerModule.forRoot()
   ],
-  providers: [ApiService, ServerService, SourceService, DateHumanPipe, ArrayDaysPipe],
+  providers: [ApiService, UserService, ServerService, SourceService, DateHumanPipe, ArrayDaysPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

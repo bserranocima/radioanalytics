@@ -5,8 +5,15 @@ const http = require('http');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+var passport = require('passport');
+var flash = require('connect-flash')
 var mongoose = require('mongoose');
+var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
 
+/**
+ * DATABASE
+ */
 //Set up default mongoose connection
 var mongoDB = 'mongodb://127.0.0.1/radiodb';
 mongoose.connect(mongoDB, {
@@ -20,22 +27,39 @@ var db = mongoose.connection;
 //Bind connection to error event (to get notification of connection errors)
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-// Get our API routes
-const api = require('./server/routes/api');
 
+/**
+ * APP EXPRESS
+ */
+
+// Initialize app express
 const app = express();
 
-//app.use(logger('dev'));
-
 // Parsers for POST data
+app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Point static path to dist
 app.use(express.static(path.join(__dirname, 'dist')));
 
+// use sessions for tracking logins
+// required for passport
+app.use(session({ secret: 'ilovescotchscotchyscotchscotch', saveUninitialized: false, resave: true })); // session secret
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+app.use(flash()); // use connect-flash for flash messages stored in session
+
+// Init passport
+require('./server/config/passport')(passport); // pass passport for configuration
+
+// Get our API routes
+const api = require('./server/routes/api');
+require('./server/routes/auth')(app, passport);
+
 // Set our api routes
 app.use('/api', api);
+
 
 // Catch all other routes and return the index file
 app.get('*', (req, res) => {

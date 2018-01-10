@@ -1,12 +1,17 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { DOCUMENT } from '@angular/platform-browser';
+import { Injectable, Inject } from '@angular/core';
 
 @Injectable()
 export class ApiService {
 
-  url: string = 'http://localhost:3000';
+  url: string = '';
 
-  constructor(public http: HttpClient) { }
+  constructor(public http: HttpClient, @Inject(DOCUMENT) private document) {
+    this.url = document.location.protocol + '//' + document.location.hostname + ':3000';
+    console.log(this.url);
+    
+  }
 
   get(endpoint: string, params?: any, reqOpts?: any) {
     if (!reqOpts) {

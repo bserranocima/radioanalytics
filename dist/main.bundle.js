@@ -251,7 +251,7 @@ var AppModule = (function () {
 /***/ "../../../../../src/app/components/account-create/account-create.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <div class=\"row\">\n    <div class=\"col-xs-12 col-md-8 col-md-offset-2\">\n      <div class=\"panel panel-default\">\n        <div class=\"panel-heading\">\n          <h3 class=\"panel-title\">Crear una cuenta</h3>\n        </div>\n        <div class=\"panel-body\">\n          <form class=\"form-horizontal\" [formGroup]=\"signupForm\" (ngSubmit)=\"onFormSubmit()\">\n            <div class=\"form-group\">\n              <label for=\"email\" class=\"col-sm-3 control-label\">Email</label>\n              <div class=\"col-sm-9\">\n                <input type=\"email\" class=\"form-control\" id=\"email\" placeholder=\"Email\" formControlName=\"email\">\n              </div>\n              \n              <div *ngIf=\"email.invalid && email.touched\" class=\"col-sm-3 text-danger\">\n              \n                <div *ngIf=\"email.errors?.required\">\n                  El campo email debe estar lleno\n                </div>\n              \n                <div *ngIf=\"email.errors?.pattern\">\n                  El email es inválido\n                </div>\n              \n              </div>\n            </div>\n\n            <div formGroupName=\"password\">\n              <div class=\"form-group\">\n                <label for=\"password\" class=\"col-sm-3 control-label\">Contraseña</label>\n                <div class=\"col-sm-9\">\n                  <input type=\"password\" class=\"form-control\" id=\"password\" placeholder=\"Contraseña\" formControlName=\"pwd\">\n                </div>\n              </div>\n\n              <div class=\"form-group\">\n                <label for=\"confirmpassword\" class=\"col-sm-3 control-label\">Repetir Contraseña</label>\n                <div class=\"col-sm-9\">\n                  <input type=\"password\" class=\"form-control\" id=\"confirmpassword\" placeholder=\"Repetir Contraseña\" formControlName=\"confirmPwd\">\n                </div>\n              </div>\n\n              <div *ngIf=\"(password.invalid && password.touched)\" class=\"col-sm-3 text-danger\">\n                Las contraseñas deben tener al menos 8 caracteres\n              </div>\n            </div>\n            <div class=\"form-group\">\n              <div class=\"col-sm-offset-9 col-sm-3\">\n                <button type=\"submit\" [disabled] = \"!signupForm.valid\" class=\"btn btn-primary pull-right\">Crear cuenta</button>\n              </div>\n            </div>\n          </form>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>"
+module.exports = "<div class=\"container\">\n  <div class=\"row\">\n    <div class=\"col-xs-12 col-md-8 col-md-offset-2\">\n      <div class=\"panel panel-default\">\n        <div class=\"panel-heading\">\n          <h3 class=\"panel-title\">Crear una cuenta</h3>\n        </div>\n        <div class=\"panel-body\">\n          <div class=\"alert alert-danger\" role=\"alert\" *ngIf=\"errorMessage\">\n            {{errorMessage}}\n          </div>\n\n          <div class=\"alert alert-success\" role=\"alert\" *ngIf=\"successMessage\">\n            {{successMessage}}\n          </div>\n          <form class=\"form-horizontal\" [formGroup]=\"signupForm\" (ngSubmit)=\"onFormSubmit()\">\n            <div class=\"form-group\">\n              <label for=\"email\" class=\"col-sm-3 control-label\">Email</label>\n              <div class=\"col-sm-9\">\n                <input type=\"email\" class=\"form-control\" id=\"email\" placeholder=\"Email\" formControlName=\"email\">\n              </div>\n              \n              <div *ngIf=\"email.invalid && email.touched\" class=\"col-sm-3 text-danger\">\n              \n                <div *ngIf=\"email.errors?.required\">\n                  El campo email debe estar lleno\n                </div>\n              \n                <div *ngIf=\"email.errors?.pattern\">\n                  El email es inválido\n                </div>\n              \n              </div>\n            </div>\n\n            <div formGroupName=\"password\">\n              <div class=\"form-group\">\n                <label for=\"password\" class=\"col-sm-3 control-label\">Contraseña</label>\n                <div class=\"col-sm-9\">\n                  <input type=\"password\" class=\"form-control\" id=\"password\" placeholder=\"Contraseña\" formControlName=\"pwd\">\n                </div>\n              </div>\n\n              <div class=\"form-group\">\n                <label for=\"confirmpassword\" class=\"col-sm-3 control-label\">Repetir Contraseña</label>\n                <div class=\"col-sm-9\">\n                  <input type=\"password\" class=\"form-control\" id=\"confirmpassword\" placeholder=\"Repetir Contraseña\" formControlName=\"confirmPwd\">\n                </div>\n              </div>\n\n              <div *ngIf=\"(password.invalid && password.touched)\" class=\"col-sm-3 text-danger\">\n                Las contraseñas deben tener al menos 8 caracteres\n              </div>\n            </div>\n            <div class=\"form-group\">\n              <div class=\"col-sm-offset-9 col-sm-3\">\n                <button type=\"submit\" [disabled] = \"!signupForm.valid\" class=\"btn btn-primary pull-right\">Crear cuenta</button>\n              </div>\n            </div>\n          </form>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -297,6 +297,8 @@ var AccountCreateComponent = (function () {
     function AccountCreateComponent(fb, userService) {
         this.fb = fb;
         this.userService = userService;
+        this.errorMessage = '';
+        this.successMessage = '';
         this.creating = false;
     }
     AccountCreateComponent.prototype.ngOnInit = function () {
@@ -322,13 +324,18 @@ var AccountCreateComponent = (function () {
         configurable: true
     });
     AccountCreateComponent.prototype.onFormSubmit = function () {
+        var _this = this;
         if (this.signupForm.valid) {
             this.user = this.signupForm.value;
             this.creating = true;
+            this.errorMessage = '';
+            this.successMessage = '';
             this.userService.create(this.user).then(function (res) {
                 console.log('account  created');
+                _this.successMessage = 'Cuenta creada satisfactoriamente. Inicia sesión con tus credenciales';
             }).catch(function (err) {
                 console.error('account cannot be created');
+                _this.errorMessage = "La cuenta no pudo ser creada. Verifica las credenciales o contacta al administrador para resolver el problema.";
             });
         }
     };
@@ -1427,7 +1434,8 @@ var DateHumanPipe = (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ApiService; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__ = __webpack_require__("../../../platform-browser/esm5/platform-browser.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1437,12 +1445,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+
 
 
 var ApiService = (function () {
-    function ApiService(http) {
+    function ApiService(http, document) {
         this.http = http;
-        this.url = 'http://localhost:3000';
+        this.document = document;
+        this.url = '';
+        this.url = document.location.protocol + '//' + document.location.hostname + ':3000';
+        console.log(this.url);
     }
     ApiService.prototype.get = function (endpoint, params, reqOpts) {
         if (!reqOpts) {
@@ -1463,8 +1478,9 @@ var ApiService = (function () {
         return this.http.post(this.url + '/' + endpoint, body, reqOpts);
     };
     ApiService = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["Injectable"])(),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */]])
+        Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["Injectable"])(),
+        __param(1, Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["Inject"])(__WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__["b" /* DOCUMENT */])),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */], Object])
     ], ApiService);
     return ApiService;
 }());

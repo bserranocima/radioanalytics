@@ -13,8 +13,11 @@ import { UserService } from '../../providers/providers';
 export class AccountCreateComponent implements OnInit {
 
   private user: User;
+  errorMessage: string = '';
+  successMessage: string = '';
   signupForm: FormGroup;
   public creating: boolean = false;
+  
 
   constructor(private fb: FormBuilder, private userService: UserService) { }
 
@@ -40,11 +43,15 @@ export class AccountCreateComponent implements OnInit {
       this.user = this.signupForm.value;
 
       this.creating = true;
+      this.errorMessage = '';
+      this.successMessage = '';
 
       this.userService.create(this.user).then(res => {
         console.log('account  created');
+        this.successMessage = 'Cuenta creada satisfactoriamente. Inicia sesión con tus credenciales';
       }).catch( err => {
         console.error('account cannot be created');
+        this.errorMessage = "La cuenta no pudo ser creada. Verifica las credenciales o contacta al administrador para resolver el problema.";
       });
       
       

@@ -22,9 +22,14 @@ export class AppComponent {
   ngOnInit() {
     this.userService.loggedin().then(res => {
       this.user = res;
+      console.log(this.router);
+      
       this.router.navigate(['/']);
     }).catch(err => {
       console.error(err);
+      if (this.router.url == '/signup')
+        return;
+      
       this.router.navigate(['/login']);
     });
   }

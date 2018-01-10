@@ -15,7 +15,7 @@ var MongoStore = require('connect-mongo')(session);
  * DATABASE
  */
 //Set up default mongoose connection
-var mongoDB = 'mongodb://127.0.0.1/radiodb';
+var mongoDB = 'mongodb://10.0.0.101/radiodb';
 mongoose.connect(mongoDB, {
     useMongoClient: true
 });

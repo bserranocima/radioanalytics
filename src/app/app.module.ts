@@ -74,6 +74,7 @@ const ROUTES = [
     DateHumanPipe,
     ArrayDaysPipe,
     AppComponent,
+    AccountComponent,
     AccountCreateComponent,
     AccountLoginComponent,
     DashboardComponent,

@@ -32,7 +32,7 @@ import { UserService } from './providers/user/user.service';
 import { ServerService } from './providers/server/server.service';
 import { SourceService } from './providers/source/source.service';
 
-const config: SocketIoConfig = { url: 'http://52.202.179.22/:3000', options: { } };
+const config: SocketIoConfig = { url: 'http://http://52.202.179.22:3000', options: { } };
 
 // Define the routes
 const ROUTES = [

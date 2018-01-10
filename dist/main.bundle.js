@@ -177,7 +177,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var config = { url: 'http://52.202.179.22/:3000', options: {} };
+var config = { url: 'http://http://52.202.179.22:3000', options: {} };
 // Define the routes
 var ROUTES = [
     {

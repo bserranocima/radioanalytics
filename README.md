@@ -8,13 +8,13 @@ Run `npm run-script dev` for a dev server. Navigate to `http://localhost:3000/`.
 
 ## Build
 
-Run `npm run-script build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+Run `npm run-script build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build. Be sure the environment.prod.ts has the right settings before build.
 
 ## Production server
 
 Run `npm start` for a prod server. Make sure you have configured the production environment variables in the file env.variables.json and you have already created the file `server/statics/monitors.json`. A template for `server/statics/monitors.json` can be found in `./monitors.example.json`. Navigate to your url to see the app running.
 
-## Version 0.0.1 alfa
+## Version 0.0.1 alpha
 - The app will get the data from the configured monitors.
 - Login is required to see all data inside.
 - To create a new user, go to `/signup` route in the URL.

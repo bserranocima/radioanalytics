@@ -1849,9 +1849,9 @@ var UserService = (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return environment; });
 var environment = {
     production: true,
-    siteUrl: '//radiostats.4cloud.co',
-    apiUrl: '//radiostats.4cloud.co',
-    socketIOUrl: '//radiostats.4cloud.co'
+    siteUrl: '//radiostats.4cloud.co:3000',
+    apiUrl: '//radiostats.4cloud.co:3000',
+    socketIOUrl: '//radiostats.4cloud.co:3000'
 };
 
 

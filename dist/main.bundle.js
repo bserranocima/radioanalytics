@@ -77,10 +77,8 @@ var AppComponent = (function () {
         var _this = this;
         this.userService.loggedin().then(function (res) {
             _this.user = res;
-            console.log(_this.router);
             _this.router.navigate(['/']);
         }).catch(function (err) {
-            console.error(err);
             if (_this.router.url == '/signup')
                 return;
             _this.router.navigate(['/login']);
@@ -128,19 +126,20 @@ var AppComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__modules_material_material_module__ = __webpack_require__("../../../../../src/app/modules/material/material.module.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_ng4_loading_spinner__ = __webpack_require__("../../../../ng4-loading-spinner/ng4-loading-spinner.umd.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_ng4_loading_spinner___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12_ng4_loading_spinner__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pipes_date_human_date_human_pipe__ = __webpack_require__("../../../../../src/app/pipes/date-human/date-human.pipe.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__pipes_array_days_array_days_pipe__ = __webpack_require__("../../../../../src/app/pipes/array-days/array-days.pipe.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__app_component__ = __webpack_require__("../../../../../src/app/app.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_dashboard_dashboard_component__ = __webpack_require__("../../../../../src/app/components/dashboard/dashboard.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_monitor_monitor_component__ = __webpack_require__("../../../../../src/app/components/monitor/monitor.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__components_source_source_component__ = __webpack_require__("../../../../../src/app/components/source/source.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__components_account_account_component__ = __webpack_require__("../../../../../src/app/components/account/account.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__components_account_create_account_create_component__ = __webpack_require__("../../../../../src/app/components/account-create/account-create.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__components_account_login_account_login_component__ = __webpack_require__("../../../../../src/app/components/account-login/account-login.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__providers_api_api_service__ = __webpack_require__("../../../../../src/app/providers/api/api.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__providers_user_user_service__ = __webpack_require__("../../../../../src/app/providers/user/user.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__providers_server_server_service__ = __webpack_require__("../../../../../src/app/providers/server/server.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__providers_source_source_service__ = __webpack_require__("../../../../../src/app/providers/source/source.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__environments_environment__ = __webpack_require__("../../../../../src/environments/environment.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__pipes_date_human_date_human_pipe__ = __webpack_require__("../../../../../src/app/pipes/date-human/date-human.pipe.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pipes_array_days_array_days_pipe__ = __webpack_require__("../../../../../src/app/pipes/array-days/array-days.pipe.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__app_component__ = __webpack_require__("../../../../../src/app/app.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_dashboard_dashboard_component__ = __webpack_require__("../../../../../src/app/components/dashboard/dashboard.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__components_monitor_monitor_component__ = __webpack_require__("../../../../../src/app/components/monitor/monitor.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__components_source_source_component__ = __webpack_require__("../../../../../src/app/components/source/source.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__components_account_account_component__ = __webpack_require__("../../../../../src/app/components/account/account.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__components_account_create_account_create_component__ = __webpack_require__("../../../../../src/app/components/account-create/account-create.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__components_account_login_account_login_component__ = __webpack_require__("../../../../../src/app/components/account-login/account-login.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__providers_api_api_service__ = __webpack_require__("../../../../../src/app/providers/api/api.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__providers_user_user_service__ = __webpack_require__("../../../../../src/app/providers/user/user.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__providers_server_server_service__ = __webpack_require__("../../../../../src/app/providers/server/server.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__providers_source_source_service__ = __webpack_require__("../../../../../src/app/providers/source/source.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -161,6 +160,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
+// Environment
+
 // Pipes
 
 
@@ -177,7 +178,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var config = { url: 'http://http://52.202.179.22:3000', options: {} };
+var config = { url: __WEBPACK_IMPORTED_MODULE_13__environments_environment__["a" /* environment */].socketIOUrl, options: {} };
 // Define the routes
 var ROUTES = [
     {
@@ -187,23 +188,23 @@ var ROUTES = [
     },
     {
         path: 'dashboard',
-        component: __WEBPACK_IMPORTED_MODULE_16__components_dashboard_dashboard_component__["a" /* DashboardComponent */]
+        component: __WEBPACK_IMPORTED_MODULE_17__components_dashboard_dashboard_component__["a" /* DashboardComponent */]
     },
     {
         path: 'source/:name',
-        component: __WEBPACK_IMPORTED_MODULE_18__components_source_source_component__["a" /* SourceComponent */]
+        component: __WEBPACK_IMPORTED_MODULE_19__components_source_source_component__["a" /* SourceComponent */]
     },
     {
         path: 'monitor',
-        component: __WEBPACK_IMPORTED_MODULE_17__components_monitor_monitor_component__["a" /* MonitorComponent */]
+        component: __WEBPACK_IMPORTED_MODULE_18__components_monitor_monitor_component__["a" /* MonitorComponent */]
     },
     {
         path: 'signup',
-        component: __WEBPACK_IMPORTED_MODULE_20__components_account_create_account_create_component__["a" /* AccountCreateComponent */]
+        component: __WEBPACK_IMPORTED_MODULE_21__components_account_create_account_create_component__["a" /* AccountCreateComponent */]
     },
     {
         path: 'login',
-        component: __WEBPACK_IMPORTED_MODULE_21__components_account_login_account_login_component__["a" /* AccountLoginComponent */]
+        component: __WEBPACK_IMPORTED_MODULE_22__components_account_login_account_login_component__["a" /* AccountLoginComponent */]
     }
 ];
 var AppModule = (function () {
@@ -212,15 +213,15 @@ var AppModule = (function () {
     AppModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_3__angular_core__["NgModule"])({
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_13__pipes_date_human_date_human_pipe__["a" /* DateHumanPipe */],
-                __WEBPACK_IMPORTED_MODULE_14__pipes_array_days_array_days_pipe__["a" /* ArrayDaysPipe */],
-                __WEBPACK_IMPORTED_MODULE_15__app_component__["a" /* AppComponent */],
-                __WEBPACK_IMPORTED_MODULE_19__components_account_account_component__["a" /* AccountComponent */],
-                __WEBPACK_IMPORTED_MODULE_20__components_account_create_account_create_component__["a" /* AccountCreateComponent */],
-                __WEBPACK_IMPORTED_MODULE_21__components_account_login_account_login_component__["a" /* AccountLoginComponent */],
-                __WEBPACK_IMPORTED_MODULE_16__components_dashboard_dashboard_component__["a" /* DashboardComponent */],
-                __WEBPACK_IMPORTED_MODULE_17__components_monitor_monitor_component__["a" /* MonitorComponent */],
-                __WEBPACK_IMPORTED_MODULE_18__components_source_source_component__["a" /* SourceComponent */],
+                __WEBPACK_IMPORTED_MODULE_14__pipes_date_human_date_human_pipe__["a" /* DateHumanPipe */],
+                __WEBPACK_IMPORTED_MODULE_15__pipes_array_days_array_days_pipe__["a" /* ArrayDaysPipe */],
+                __WEBPACK_IMPORTED_MODULE_16__app_component__["a" /* AppComponent */],
+                __WEBPACK_IMPORTED_MODULE_20__components_account_account_component__["a" /* AccountComponent */],
+                __WEBPACK_IMPORTED_MODULE_21__components_account_create_account_create_component__["a" /* AccountCreateComponent */],
+                __WEBPACK_IMPORTED_MODULE_22__components_account_login_account_login_component__["a" /* AccountLoginComponent */],
+                __WEBPACK_IMPORTED_MODULE_17__components_dashboard_dashboard_component__["a" /* DashboardComponent */],
+                __WEBPACK_IMPORTED_MODULE_18__components_monitor_monitor_component__["a" /* MonitorComponent */],
+                __WEBPACK_IMPORTED_MODULE_19__components_source_source_component__["a" /* SourceComponent */],
             ],
             imports: [
                 __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__["a" /* BrowserModule */],
@@ -237,8 +238,8 @@ var AppModule = (function () {
                 __WEBPACK_IMPORTED_MODULE_5_ng_socket_io__["b" /* SocketIoModule */].forRoot(config),
                 __WEBPACK_IMPORTED_MODULE_12_ng4_loading_spinner__["Ng4LoadingSpinnerModule"].forRoot()
             ],
-            providers: [__WEBPACK_IMPORTED_MODULE_22__providers_api_api_service__["a" /* ApiService */], __WEBPACK_IMPORTED_MODULE_23__providers_user_user_service__["a" /* UserService */], __WEBPACK_IMPORTED_MODULE_24__providers_server_server_service__["a" /* ServerService */], __WEBPACK_IMPORTED_MODULE_25__providers_source_source_service__["a" /* SourceService */], __WEBPACK_IMPORTED_MODULE_13__pipes_date_human_date_human_pipe__["a" /* DateHumanPipe */], __WEBPACK_IMPORTED_MODULE_14__pipes_array_days_array_days_pipe__["a" /* ArrayDaysPipe */]],
-            bootstrap: [__WEBPACK_IMPORTED_MODULE_15__app_component__["a" /* AppComponent */]]
+            providers: [__WEBPACK_IMPORTED_MODULE_23__providers_api_api_service__["a" /* ApiService */], __WEBPACK_IMPORTED_MODULE_24__providers_user_user_service__["a" /* UserService */], __WEBPACK_IMPORTED_MODULE_25__providers_server_server_service__["a" /* ServerService */], __WEBPACK_IMPORTED_MODULE_26__providers_source_source_service__["a" /* SourceService */], __WEBPACK_IMPORTED_MODULE_14__pipes_date_human_date_human_pipe__["a" /* DateHumanPipe */], __WEBPACK_IMPORTED_MODULE_15__pipes_array_days_array_days_pipe__["a" /* ArrayDaysPipe */]],
+            bootstrap: [__WEBPACK_IMPORTED_MODULE_16__app_component__["a" /* AppComponent */]]
         })
     ], AppModule);
     return AppModule;
@@ -1434,8 +1435,8 @@ var DateHumanPipe = (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ApiService; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__ = __webpack_require__("../../../platform-browser/esm5/platform-browser.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__environments_environment__ = __webpack_require__("../../../../../src/environments/environment.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1445,19 +1446,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 
 
 
 var ApiService = (function () {
-    function ApiService(http, document) {
+    function ApiService(http) {
         this.http = http;
-        this.document = document;
-        this.url = '';
-        this.url = document.location.protocol + '//' + document.location.hostname + ':3000';
-        console.log(this.url);
+        this.url = __WEBPACK_IMPORTED_MODULE_2__environments_environment__["a" /* environment */].apiUrl;
     }
     ApiService.prototype.get = function (endpoint, params, reqOpts) {
         if (!reqOpts) {
@@ -1478,9 +1473,8 @@ var ApiService = (function () {
         return this.http.post(this.url + '/' + endpoint, body, reqOpts);
     };
     ApiService = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["Injectable"])(),
-        __param(1, Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["Inject"])(__WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__["b" /* DOCUMENT */])),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */], Object])
+        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["Injectable"])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */]])
     ], ApiService);
     return ApiService;
 }());
@@ -1853,12 +1847,11 @@ var UserService = (function () {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return environment; });
-// The file contents for the current environment will overwrite these during build.
-// The build system defaults to the dev environment which uses `environment.ts`, but if you do
-// `ng build --env=prod` then `environment.prod.ts` will be used instead.
-// The list of which env maps to which file can be found in `.angular-cli.json`.
 var environment = {
-    production: false
+    production: true,
+    siteUrl: '//0.0.0.0:8080',
+    apiUrl: '//0.0.0.0:8080',
+    socketIOUrl: '//0.0.0.0:8080'
 };
 
 

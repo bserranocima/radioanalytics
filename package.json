@@ -4,13 +4,12 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "node server.js",
-    "build": "ng build --prod",
-    "prod": "",
+    "start": "NODE_ENV=production node server",
+    "dev": "NODE_ENV=development node server && ng build --watch",
+    "build": "ng build --env=prod",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e",
-    "rebuild": "node server.js && ng build --watch"
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {

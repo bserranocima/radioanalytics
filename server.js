@@ -10,12 +10,13 @@ var flash = require('connect-flash')
 var mongoose = require('mongoose');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
+var env = require('./server/config/config.env.js').config();
 
 /**
  * DATABASE
  */
 //Set up default mongoose connection
-var mongoDB = 'mongodb://10.0.0.101/radiodb';
+var mongoDB = env.MONGOURL;
 mongoose.connect(mongoDB, {
     useMongoClient: true
 });
@@ -45,7 +46,7 @@ app.use(express.static(path.join(__dirname, 'dist')));
 
 // use sessions for tracking logins
 // required for passport
-app.use(session({ secret: 'ilovescotchscotchyscotchscotch', saveUninitialized: false, resave: true })); // session secret
+app.use(session({ secret: env.SESSION_SECRET, saveUninitialized: false, resave: true })); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
@@ -88,7 +89,7 @@ app.get('*', (req, res) => {
 /**
  * Get port from environment and store in Express.
  */
-const port = process.env.PORT || '3000';
+const port = env.PORT || '3000';
 app.set('port', port);
 
 /**

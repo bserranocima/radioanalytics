@@ -13,6 +13,9 @@ import { MatNativeDateModule } from '@angular/material';
 import { MaterialModule } from './modules/material/material.module';
 import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 
+// Environment
+import { environment } from '../environments/environment';
+
 // Pipes
 import { DateHumanPipe } from './pipes/date-human/date-human.pipe';
 import { ArrayDaysPipe } from './pipes/array-days/array-days.pipe';
@@ -32,7 +35,8 @@ import { UserService } from './providers/user/user.service';
 import { ServerService } from './providers/server/server.service';
 import { SourceService } from './providers/source/source.service';
 
-const config: SocketIoConfig = { url: 'http://http://52.202.179.22:3000', options: { } };
+
+const config: SocketIoConfig = { url: environment.socketIOUrl, options: { } };
 
 // Define the routes
 const ROUTES = [
